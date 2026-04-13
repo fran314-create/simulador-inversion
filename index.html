@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Simulador de Inversión</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <style>
     body {
       font-family: Arial;
@@ -11,21 +12,49 @@
       margin: auto;
       padding: 20px;
     }
+
+    h2 {
+      margin-bottom: 5px;
+    }
+
+    label {
+      margin-top: 10px;
+      display: block;
+    }
+
     input, button {
       width: 100%;
       margin: 5px 0;
       padding: 10px;
     }
+
+    button {
+      background: black;
+      color: white;
+      font-weight: bold;
+    }
+
+    button:hover {
+      opacity: 0.8;
+      cursor: pointer;
+    }
+
     .result {
       margin-top: 20px;
-      padding: 10px;
+      padding: 15px;
       background: #f2f2f2;
+      border-radius: 8px;
     }
   </style>
 </head>
+
 <body>
 
-<h2>Simulador de Inversión</h2>
+<h2>¿Cuánto dinero podrías tener?</h2>
+
+<p style="font-size:18px; margin-bottom:20px;">
+  Si empiezas hoy, podrías alcanzar cifras que no imaginas.
+</p>
 
 <label>Capital inicial (€)</label>
 <input type="number" id="initial" value="1000">
@@ -39,7 +68,7 @@
 <label>Rentabilidad anual (%)</label>
 <input type="number" id="rate" value="7">
 
-<button onclick="calculate()">Calcular</button>
+<button onclick="calculate()">Calcular mi futuro</button>
 
 <div class="result" id="output"></div>
 
@@ -47,8 +76,17 @@
 
 <script>
 let chart;
+let hasUsed = false;
 
 function calculate() {
+
+  if (hasUsed) {
+    alert("Versión gratuita: solo 1 simulación. Próximamente versión premium.");
+    return;
+  }
+
+  hasUsed = true;
+
   let initial = parseFloat(document.getElementById('initial').value);
   let monthly = parseFloat(document.getElementById('monthly').value);
   let years = parseFloat(document.getElementById('years').value);
@@ -68,9 +106,15 @@ function calculate() {
   let interest = balance - totalInvested;
 
   document.getElementById('output').innerHTML = `
-    <b>Total final:</b> ${balance.toFixed(2)} €<br>
-    <b>Total aportado:</b> ${totalInvested.toFixed(2)} €<br>
-    <b>Intereses:</b> ${interest.toFixed(2)} €
+    <h3>💰 En ${years} años podrías tener:</h3>
+    <h2>${balance.toFixed(2)} €</h2>
+    <p>
+      Has invertido ${totalInvested.toFixed(2)} €<br>
+      Ganancias: ${interest.toFixed(2)} €
+    </p>
+    <p style="margin-top:10px; font-style:italic;">
+      El tiempo es tu mejor aliado. Cuanto antes empieces, mayor será el efecto.
+    </p>
   `;
 
   drawChart(data);
