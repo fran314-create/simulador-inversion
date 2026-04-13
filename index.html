@@ -7,180 +7,429 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      max-width: 760px;
-      margin: auto;
-      padding: 20px;
-      background: #fafafa;
-      color: #111;
+      margin: 0;
+      font-family: Inter, Arial, sans-serif;
+      background: linear-gradient(180deg, #f4f7fb 0%, #eef2f7 100%);
+      color: #111827;
+      padding: 24px;
+    }
+
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: #e8eefc;
+      color: #1d4ed8;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 14px;
     }
 
     h1 {
-      margin-bottom: 5px;
-      font-size: 32px;
+      margin: 0 0 10px;
+      font-size: 42px;
+      line-height: 1.1;
+      letter-spacing: -1px;
     }
 
-    p.subtitle {
+    .subtitle {
+      max-width: 700px;
+      margin: 0 auto;
       font-size: 18px;
-      margin-bottom: 24px;
-      color: #444;
+      line-height: 1.5;
+      color: #4b5563;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 22px;
+      align-items: start;
     }
 
     .card {
-      background: white;
-      padding: 18px;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-      margin-bottom: 20px;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+    }
+
+    .card-title {
+      margin: 0 0 8px;
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .card-text {
+      margin: 0 0 18px;
+      color: #6b7280;
+      line-height: 1.5;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 14px;
     }
 
     label {
-      margin-top: 12px;
       display: block;
-      font-weight: bold;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 7px;
+      color: #374151;
     }
 
-    input, button {
+    input {
       width: 100%;
-      margin-top: 6px;
-      padding: 12px;
-      box-sizing: border-box;
-      border-radius: 8px;
-      border: 1px solid #ccc;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid #d1d5db;
+      background: #f9fafb;
       font-size: 16px;
+      outline: none;
+      transition: 0.2s ease;
     }
 
-    button {
-      background: black;
-      color: white;
-      font-weight: bold;
+    input:focus {
+      border-color: #2563eb;
+      background: white;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+    }
+
+    .primary-button,
+    .premium-button {
+      width: 100%;
       border: none;
-      margin-top: 18px;
-    }
-
-    button:hover {
-      opacity: 0.85;
+      border-radius: 16px;
+      padding: 15px 18px;
+      font-size: 16px;
+      font-weight: 800;
       cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease, box-shadow 0.15s ease;
     }
 
-    .result {
-      margin-top: 20px;
-      padding: 16px;
-      background: #f2f2f2;
-      border-radius: 10px;
-    }
-
-    .compare-box {
-      margin-top: 20px;
-      padding: 16px;
-      background: #fff8e7;
-      border: 1px solid #f1d38a;
-      border-radius: 10px;
+    .primary-button {
+      margin-top: 6px;
+      background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+      color: white;
+      box-shadow: 0 12px 24px rgba(17, 24, 39, 0.18);
     }
 
     .premium-button {
-      background: #d97706;
+      margin-top: 6px;
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: white;
+      box-shadow: 0 12px 24px rgba(37, 99, 235, 0.22);
+    }
+
+    .primary-button:hover,
+    .premium-button:hover {
+      opacity: 0.96;
+      transform: translateY(-1px);
+    }
+
+    .result-card {
+      background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+      color: white;
+      border-radius: 22px;
+      padding: 22px;
+      margin-top: 18px;
+      box-shadow: 0 18px 40px rgba(17, 24, 39, 0.22);
+      min-height: 180px;
+    }
+
+    .result-label {
+      font-size: 14px;
+      font-weight: 700;
+      opacity: 0.8;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .big-number {
+      font-size: 42px;
+      font-weight: 900;
+      line-height: 1.05;
+      margin: 0 0 14px;
+      letter-spacing: -1px;
+    }
+
+    .result-meta {
+      color: rgba(255,255,255,0.82);
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    .tip {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255,255,255,0.16);
+      color: rgba(255,255,255,0.78);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .mini-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .mini-stat {
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .mini-stat-label {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 8px;
+    }
+
+    .mini-stat-value {
+      font-size: 22px;
+      font-weight: 800;
+      color: #111827;
     }
 
     .premium-note {
-      font-size: 14px;
-      color: #7a5a00;
       margin-top: 10px;
+      font-size: 14px;
+      color: #6b7280;
+    }
+
+    .compare-output {
+      margin-top: 18px;
     }
 
     .scenario-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 14px;
-      margin-top: 14px;
     }
 
     .scenario-card {
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 14px;
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      border-radius: 18px;
+      padding: 18px;
     }
 
-    .scenario-card h3 {
-      margin-top: 0;
-      margin-bottom: 10px;
+    .scenario-title {
+      margin: 0 0 10px;
       font-size: 18px;
+      font-weight: 800;
     }
 
-    .highlight {
-      font-size: 28px;
-      font-weight: bold;
-      margin: 8px 0;
+    .scenario-row {
+      color: #4b5563;
+      margin: 6px 0;
+      font-size: 15px;
+    }
+
+    .scenario-amount {
+      margin-top: 14px;
+      font-size: 30px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      color: #111827;
+    }
+
+    .difference-box {
+      margin-top: 14px;
+      border-radius: 18px;
+      padding: 18px;
+      background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%);
+      border: 1px solid #bfdbfe;
+    }
+
+    .difference-title {
+      margin: 0 0 8px;
+      font-size: 18px;
+      font-weight: 800;
+      color: #1e3a8a;
+    }
+
+    .difference-value {
+      font-size: 34px;
+      font-weight: 900;
+      color: #1d4ed8;
+      margin-bottom: 8px;
+    }
+
+    .chart-card {
+      margin-top: 22px;
+      padding: 20px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(255,255,255,0.7);
+      box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+    }
+
+    .chart-title {
+      margin: 0 0 16px;
+      font-size: 20px;
+      font-weight: 800;
     }
 
     canvas {
-      margin-top: 20px;
-      background: white;
-      border-radius: 12px;
-      padding: 10px;
+      width: 100%;
+      max-width: 100%;
     }
 
-    @media (max-width: 640px) {
+    .footer-note {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 14px;
+      color: #6b7280;
+    }
+
+    @media (max-width: 840px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .mini-stats {
+        grid-template-columns: 1fr;
+      }
+
       .scenario-grid {
         grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 34px;
+      }
+
+      .big-number {
+        font-size: 34px;
       }
     }
   </style>
 </head>
 
 <body>
+  <div class="container">
+    <div class="hero">
+      <div class="badge">Simulación simple y visual</div>
+      <h1>Descubre cuánto podría crecer tu dinero</h1>
+      <p class="subtitle">
+        Introduce tus datos y visualiza en segundos cómo puede evolucionar una inversión con el paso del tiempo.
+      </p>
+    </div>
 
-  <h1>¿Cuánto dinero podrías tener?</h1>
-  <p class="subtitle">
-    Si empiezas hoy, podrías alcanzar cifras que no imaginas.
-  </p>
+    <div class="layout">
+      <div class="card">
+        <h2 class="card-title">Tu simulación</h2>
+        <p class="card-text">
+          Ajusta el capital inicial, la aportación mensual, los años y la rentabilidad estimada.
+        </p>
 
-  <div class="card">
-    <label>Capital inicial (€)</label>
-    <input type="number" id="initial" value="1000" min="0">
+        <div class="form-grid">
+          <div>
+            <label>Capital inicial (€)</label>
+            <input type="number" id="initial" value="1000" min="0">
+          </div>
 
-    <label>Aportación mensual (€)</label>
-    <input type="number" id="monthly" value="100" min="0">
+          <div>
+            <label>Aportación mensual (€)</label>
+            <input type="number" id="monthly" value="100" min="0">
+          </div>
 
-    <label>Años</label>
-    <input type="number" id="years" value="20" min="1">
+          <div>
+            <label>Años</label>
+            <input type="number" id="years" value="20" min="1">
+          </div>
 
-    <label>Rentabilidad anual (%)</label>
-    <input type="number" id="rate" value="7" min="0" step="0.1">
+          <div>
+            <label>Rentabilidad anual (%)</label>
+            <input type="number" id="rate" value="7" min="0" step="0.1">
+          </div>
+        </div>
 
-    <button onclick="calculateBasic()">Calcular mi futuro</button>
+        <button class="primary-button" onclick="calculateBasic()">Calcular mi futuro</button>
 
-    <div class="result" id="output">
-      Aquí verás tu resultado.
+        <div class="result-card" id="output">
+          <div class="result-label">Resultado</div>
+          <div class="big-number">—</div>
+          <div class="result-meta">
+            Aquí verás cuánto podrías acumular con tus aportaciones.
+          </div>
+        </div>
+
+        <div class="mini-stats" id="miniStats">
+          <div class="mini-stat">
+            <div class="mini-stat-label">Total aportado</div>
+            <div class="mini-stat-value">—</div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-label">Ganancias</div>
+            <div class="mini-stat-value">—</div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-label">Horizonte</div>
+            <div class="mini-stat-value">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="card-title">Comparar escenarios</h2>
+        <p class="card-text">
+          Prueba cómo cambia el resultado si aumentas la aportación mensual o la rentabilidad estimada.
+        </p>
+
+        <div class="form-grid">
+          <div>
+            <label>Aportación mensual alternativa (€)</label>
+            <input type="number" id="monthlyCompare" value="150" min="0">
+          </div>
+
+          <div>
+            <label>Rentabilidad anual alternativa (%)</label>
+            <input type="number" id="rateCompare" value="9" min="0" step="0.1">
+          </div>
+        </div>
+
+        <button class="premium-button" onclick="compareScenarios()">Comparar escenarios</button>
+        <div class="premium-note">
+          Esta sección representa la funcionalidad premium del producto.
+        </div>
+
+        <div class="compare-output" id="compareOutput"></div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h2 class="chart-title">Evolución estimada</h2>
+      <canvas id="chart"></canvas>
+    </div>
+
+    <div class="footer-note">
+      Simulación orientativa. No constituye asesoramiento financiero.
     </div>
   </div>
-
-  <div class="compare-box">
-    <h2>Comparar escenarios</h2>
-    <p>
-      Descubre cuánto cambia tu futuro si ajustas la rentabilidad o la aportación mensual.
-    </p>
-
-    <label>Escenario premium: aportación mensual alternativa (€)</label>
-    <input type="number" id="monthlyCompare" value="150" min="0">
-
-    <label>Escenario premium: rentabilidad anual alternativa (%)</label>
-    <input type="number" id="rateCompare" value="9" min="0" step="0.1">
-
-    <button class="premium-button" onclick="compareScenarios()">
-      Comparar escenarios
-    </button>
-
-    <p class="premium-note">
-      Esta función forma parte de la versión premium.
-    </p>
-
-    <div id="compareOutput"></div>
-  </div>
-
-  <canvas id="chart"></canvas>
 
   <script>
     let chart;
@@ -237,15 +486,29 @@
       const result = simulateInvestment(initial, monthly, years, rate);
 
       document.getElementById('output').innerHTML = `
-        <h3>💰 En ${years} años podrías tener:</h3>
-        <div class="highlight">${formatEuros(result.finalBalance)}</div>
-        <p>
-          Has aportado ${formatEuros(result.totalInvested)}<br>
-          Ganancias generadas: ${formatEuros(result.interest)}
-        </p>
-        <p style="margin-top:10px; font-style:italic;">
-          El tiempo es tu mejor aliado. Cuanto antes empieces, mayor será el efecto.
-        </p>
+        <div class="result-label">En ${years} años podrías tener</div>
+        <div class="big-number">${formatEuros(result.finalBalance)}</div>
+        <div class="result-meta">
+          Has aportado ${formatEuros(result.totalInvested)} y las ganancias estimadas serían de ${formatEuros(result.interest)}.
+        </div>
+        <div class="tip">
+          El tiempo puede marcar una diferencia enorme. Empezar antes suele importar más de lo que parece.
+        </div>
+      `;
+
+      document.getElementById('miniStats').innerHTML = `
+        <div class="mini-stat">
+          <div class="mini-stat-label">Total aportado</div>
+          <div class="mini-stat-value">${formatEuros(result.totalInvested)}</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-stat-label">Ganancias</div>
+          <div class="mini-stat-value">${formatEuros(result.interest)}</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-stat-label">Horizonte</div>
+          <div class="mini-stat-value">${years} años</div>
+        </div>
       `;
 
       drawChart(result.data, null);
@@ -260,32 +523,31 @@
 
       const scenarioA = simulateInvestment(initial, monthly, years, rate);
       const scenarioB = simulateInvestment(initial, monthlyCompare, years, rateCompare);
-
       const difference = scenarioB.finalBalance - scenarioA.finalBalance;
 
       document.getElementById('compareOutput').innerHTML = `
         <div class="scenario-grid">
           <div class="scenario-card">
-            <h3>Escenario actual</h3>
-            <p>Aportación mensual: ${formatEuros(monthly)}</p>
-            <p>Rentabilidad: ${(rate * 100).toFixed(1)}%</p>
-            <div class="highlight">${formatEuros(scenarioA.finalBalance)}</div>
+            <div class="scenario-title">Escenario actual</div>
+            <div class="scenario-row">Aportación mensual: ${formatEuros(monthly)}</div>
+            <div class="scenario-row">Rentabilidad: ${(rate * 100).toFixed(1)}%</div>
+            <div class="scenario-amount">${formatEuros(scenarioA.finalBalance)}</div>
           </div>
 
           <div class="scenario-card">
-            <h3>Escenario alternativo</h3>
-            <p>Aportación mensual: ${formatEuros(monthlyCompare)}</p>
-            <p>Rentabilidad: ${(rateCompare * 100).toFixed(1)}%</p>
-            <div class="highlight">${formatEuros(scenarioB.finalBalance)}</div>
+            <div class="scenario-title">Escenario alternativo</div>
+            <div class="scenario-row">Aportación mensual: ${formatEuros(monthlyCompare)}</div>
+            <div class="scenario-row">Rentabilidad: ${(rateCompare * 100).toFixed(1)}%</div>
+            <div class="scenario-amount">${formatEuros(scenarioB.finalBalance)}</div>
           </div>
         </div>
 
-        <div class="result" style="margin-top:16px;">
-          <h3>Diferencia final</h3>
-          <div class="highlight">${formatEuros(difference)}</div>
-          <p>
-            Cambiar tus condiciones podría suponer una diferencia enorme con el paso de los años.
-          </p>
+        <div class="difference-box">
+          <div class="difference-title">Diferencia final estimada</div>
+          <div class="difference-value">${formatEuros(difference)}</div>
+          <div>
+            Un pequeño cambio en tus condiciones puede producir una diferencia muy grande a largo plazo.
+          </div>
         </div>
       `;
 
@@ -303,7 +565,8 @@
         {
           label: 'Escenario actual',
           data: dataA,
-          tension: 0.25
+          borderWidth: 3,
+          tension: 0.3
         }
       ];
 
@@ -311,7 +574,8 @@
         datasets.push({
           label: 'Escenario alternativo',
           data: dataB,
-          tension: 0.25
+          borderWidth: 3,
+          tension: 0.3
         });
       }
 
@@ -323,9 +587,14 @@
         },
         options: {
           responsive: true,
+          maintainAspectRatio: true,
           plugins: {
             legend: {
-              display: true
+              labels: {
+                boxWidth: 16,
+                usePointStyle: true,
+                pointStyle: 'line'
+              }
             }
           },
           scales: {
@@ -333,12 +602,18 @@
               title: {
                 display: true,
                 text: 'Meses'
+              },
+              grid: {
+                color: 'rgba(0,0,0,0.05)'
               }
             },
             y: {
               title: {
                 display: true,
                 text: 'Capital acumulado (€)'
+              },
+              grid: {
+                color: 'rgba(0,0,0,0.05)'
               }
             }
           }
@@ -346,6 +621,5 @@
       });
     }
   </script>
-
 </body>
 </html>
