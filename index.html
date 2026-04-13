@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Simulador de Inversión</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial;
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+    }
+    input, button {
+      width: 100%;
+      margin: 5px 0;
+      padding: 10px;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 10px;
+      background: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Simulador de Inversión</h2>
+
+<label>Capital inicial (€)</label>
+<input type="number" id="initial" value="1000">
+
+<label>Aportación mensual (€)</label>
+<input type="number" id="monthly" value="100">
+
+<label>Años</label>
+<input type="number" id="years" value="20">
+
+<label>Rentabilidad anual (%)</label>
+<input type="number" id="rate" value="7">
+
+<button onclick="calculate()">Calcular</button>
+
+<div class="result" id="output"></div>
+
+<canvas id="chart"></canvas>
+
+<script>
+let chart;
+
+function calculate() {
+  let initial = parseFloat(document.getElementById('initial').value);
+  let monthly = parseFloat(document.getElementById('monthly').value);
+  let years = parseFloat(document.getElementById('years').value);
+  let rate = parseFloat(document.getElementById('rate').value) / 100;
+
+  let months = years * 12;
+  let balance = initial;
+  let data = [];
+
+  for (let i = 0; i < months; i++) {
+    balance += monthly;
+    balance *= (1 + rate / 12);
+    data.push(balance);
+  }
+
+  let totalInvested = initial + monthly * months;
+  let interest = balance - totalInvested;
+
+  document.getElementById('output').innerHTML = `
+    <b>Total final:</b> ${balance.toFixed(2)} €<br>
+    <b>Total aportado:</b> ${totalInvested.toFixed(2)} €<br>
+    <b>Intereses:</b> ${interest.toFixed(2)} €
+  `;
+
+  drawChart(data);
+}
+
+function drawChart(data) {
+  const ctx = document.getElementById('chart').getContext('2d');
+
+  if (chart) chart.destroy();
+
+  chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: data.map((_, i) => i + 1),
+      datasets: [{
+        label: 'Evolución del dinero',
+        data: data
+      }]
+    }
+  });
+}
+</script>
+
+</body>
+</html>
